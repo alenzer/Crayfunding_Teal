@@ -55,6 +55,7 @@ const App = function AppWrapper() {
     };
 
     useEffect(() => {
+        if (sessionStorage.getItem("address")) setAddress(sessionStorage.getItem("address"))
         fetchBalance(window.sessionStorage.getItem("address"))
     },[]);
 
