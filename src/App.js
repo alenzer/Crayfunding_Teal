@@ -15,9 +15,8 @@ import coverImg from "./assets/img/landing_page.png"
 
 
 const App = function AppWrapper() {
-    window.sessionStorage.setItem("address", "")
-
     const [balance, setBalance] = useState(0);
+    const [address, setAddress] = useState("");
 
     const fetchBalance = async (accountAddress) => {
         indexerClient.lookupAccountByID(accountAddress).do()
@@ -40,7 +39,8 @@ const App = function AppWrapper() {
                     }).then((accounts) => {
                         console.log('Successfully collected testNet accounts');
                         const _account = accounts[0];
-                        sessionStorage.setItem("address", _account.address)
+                        sessionStorage.setItem("address", _account.address);
+                        setAddress(_account.address);
                         fetchBalance(_account.address);
                         console.log(_account)
                 })}).catch(error => {
@@ -59,14 +59,15 @@ const App = function AppWrapper() {
     },[]);
 
     const disconnect = () => {
-        window.sessionStorage.setItem("address", "")
+        setAddress("");
+        window.sessionStorage.setItem("address", "");
         setBalance(null);
     };
 
     return (
         <>
             <Toaster />
-            {window.sessionStorage.getItem("address").length > 0 ? (
+            {address.length > 0 ? (
                 <HashRouter>
                 <div style={{backgroundColor: "#263238",   minHeight: "100vh"}}>
                 <HeaderWithNav/>
