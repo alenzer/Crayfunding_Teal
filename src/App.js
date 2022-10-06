@@ -15,6 +15,7 @@ import coverImg from "./assets/img/landing_page.png"
 
 
 const App = function AppWrapper() {
+    window.sessionStorage.setItem("address", "")
 
     const [balance, setBalance] = useState(0);
 
