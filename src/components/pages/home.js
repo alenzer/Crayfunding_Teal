@@ -12,7 +12,7 @@ const Home = () => {
     const [sponsoredList, setSponsoredList] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const address = window.localStorage.getItem("address")
+    const address = window.sessionStorage.getItem("address")
 
 
     const getProjects = async () => {

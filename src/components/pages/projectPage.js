@@ -11,7 +11,7 @@ import { microAlgosToString, truncateAddress } from '../../utils/conversions';
 import { BadgeList } from '../utils/badgeList';
 
 const ProjectPage = () => {
-    const address = window.localStorage.getItem("address")
+    const address = window.sessionStorage.getItem("address")
 
     let params = useParams();
 

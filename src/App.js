@@ -39,7 +39,7 @@ const App = function AppWrapper() {
                     }).then((accounts) => {
                         console.log('Successfully collected testNet accounts');
                         const _account = accounts[0];
-                        localStorage.setItem("address", _account.address)
+                        sessionStorage.setItem("address", _account.address)
                         fetchBalance(_account.address);
                         console.log(_account)
                 })}).catch(error => {
@@ -54,18 +54,18 @@ const App = function AppWrapper() {
     };
 
     useEffect(() => {
-        fetchBalance(window.localStorage.getItem("address"))
+        fetchBalance(window.sessionStorage.getItem("address"))
     },[]);
 
     const disconnect = () => {
-        window.localStorage.setItem("address", "")
+        window.sessionStorage.setItem("address", "")
         setBalance(null);
     };
 
     return (
         <>
             <Toaster />
-            {window.localStorage.getItem("address").length > 0 ? (
+            {window.sessionStorage.getItem("address").length > 0 ? (
                 <BrowserRouter>
                 <div style={{backgroundColor: "#263238",   minHeight: "100vh"}}>
                 <HeaderWithNav/>
@@ -73,7 +73,7 @@ const App = function AppWrapper() {
                     <Nav className="justify-content-end pt-3 pb-0" style={{position: 'flex'}}>
                         <Nav.Item>
                             <Wallet
-                                address={window.localStorage.getItem("address")}
+                                address={window.sessionStorage.getItem("address")}
                                 amount={balance}
                                 disconnect={disconnect}
                                 symbol={"ALGO"}

@@ -18,7 +18,7 @@ const CreateProjectForm = ({createProject}) => {
     const [startTime, setStartTime] = useState("00:00")
     const [endTime, setEndTime] = useState("00:00")
 
-    const address = window.localStorage.getItem("address")
+    const address = window.sessionStorage.getItem("address")
 
     const toggleSponsor = () => setIsSponsored(!isSponsored)
 

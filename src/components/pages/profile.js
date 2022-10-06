@@ -15,7 +15,7 @@ function NoProjectsHere ({text}) {
 }
 
 function UserProfile() {
-    const address = window.localStorage.getItem("address")
+    const address = window.sessionStorage.getItem("address")
 
     const [createdList, setCreatedList] = useState([]);
     const [fundedList, setFundedList] = useState([]);
