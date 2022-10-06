@@ -67,7 +67,7 @@ const App = function AppWrapper() {
     return (
         <>
             <Toaster />
-            {address.length > 0 ? (
+            {address.length > 0 && (window.sessionStorage.getItem("address").length > 0) ? (
                 <HashRouter>
                 <div style={{backgroundColor: "#263238",   minHeight: "100vh"}}>
                 <HeaderWithNav/>
