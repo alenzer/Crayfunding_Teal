@@ -8,7 +8,7 @@ import {Footer} from "./components/footer";
 import Routes from './components/utils/routes'
 
 
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { toast , Toaster} from "react-hot-toast";
 import {indexerClient} from "./utils/constants";
 import coverImg from "./assets/img/landing_page.png"
@@ -66,7 +66,7 @@ const App = function AppWrapper() {
         <>
             <Toaster />
             {window.sessionStorage.getItem("address").length > 0 ? (
-                <BrowserRouter>
+                <HashRouter>
                 <div style={{backgroundColor: "#263238",   minHeight: "100vh"}}>
                 <HeaderWithNav/>
                 <Container fluid="md">
@@ -85,7 +85,7 @@ const App = function AppWrapper() {
                 
                 <Footer/>
                 </div>
-                </BrowserRouter>
+                </HashRouter>
             ) : (
                 <LandingPage name={"CrazyCrowd"} mainImg={coverImg} connect={connectWallet}/>
             )}
