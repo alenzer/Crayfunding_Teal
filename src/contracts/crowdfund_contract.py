@@ -11,6 +11,8 @@ class FundingProject:
         creator_address = Bytes("CREATOR")
         escrow_addres = Bytes("ESCROW_ADDR")
         current_amount = Bytes("CURRENT_AMOUNT")
+        platform_address = Bytes("PLATFORM_ADDRESS")
+        is_sponsored = Bytes('IS_SPONSORED')
 
     class AppMethods:
         donate = Bytes("donate")
@@ -19,15 +21,23 @@ class FundingProject:
     
     def funding_project_creation(self):
         return Seq([
-            Assert(Txn.application_args.length() == Int(3)),
+            Assert(Txn.application_args.length() == Int(5)),
             Assert(Le(Global.latest_timestamp(), Btoi(Txn.application_args[0]))),
             Assert(Ge(Btoi(Txn.application_args[1]), Btoi(Txn.application_args[0]))),
             Assert(Btoi(Txn.application_args[2]) > Int(0)),
             App.globalPut(self.Variables.start_date, Btoi(Txn.application_args[0])),
             App.globalPut(self.Variables.end_date, Btoi(Txn.application_args[1])),
             App.globalPut(self.Variables.goal_amount, Btoi(Txn.application_args[2])),
+            App.globalPut(self.Variables.platform_address, Txn.application_args[3]),
+            App.globalPut(self.Variables.is_sponsored, Btoi(Txn.application_args[4])),
             App.globalPut(self.Variables.creator_address, Txn.sender()),
             App.globalPut(self.Variables.current_amount, Int(0)),
+            If(App.globalGet(self.Variables.is_sponsored) == Int(1)).Then(Seq([
+                Assert(Global.group_size() == Int(2)),
+                Assert(Gtxn[1].type_enum() == TxnType.Payment),
+                Assert(Gtxn[1].receiver() == App.globalGet(self.Variables.platform_address)),
+                Assert(Gtxn[1].amount() >= Global.min_txn_fee())
+                ])),
             Approve()
         ])
 

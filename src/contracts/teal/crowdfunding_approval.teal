@@ -172,7 +172,7 @@ int 1
 return
 main_l14:
 txn NumAppArgs
-int 3
+int 5
 ==
 assert
 global LatestTimestamp
@@ -203,11 +203,43 @@ byte "GOAL_AMOUNT"
 txna ApplicationArgs 2
 btoi
 app_global_put
+byte "PLATFORM_ADDRESS"
+txna ApplicationArgs 3
+app_global_put
+byte "IS_SPONSORED"
+txna ApplicationArgs 4
+btoi
+app_global_put
 byte "CREATOR"
 txn Sender
 app_global_put
 byte "CURRENT_AMOUNT"
 int 0
 app_global_put
+byte "IS_SPONSORED"
+app_global_get
+int 1
+==
+bnz main_l16
+main_l15:
 int 1
 return
+main_l16:
+global GroupSize
+int 2
+==
+assert
+gtxn 1 TypeEnum
+int pay
+==
+assert
+gtxn 1 Receiver
+byte "PLATFORM_ADDRESS"
+app_global_get
+==
+assert
+gtxn 1 Amount
+global MinTxnFee
+>=
+assert
+b main_l15

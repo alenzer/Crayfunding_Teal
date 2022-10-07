@@ -9,7 +9,7 @@ export const createProject = async (sender, data) => {
     let project = new crowdfundingProject(
         data.name, data.image, data.description, 
         data.goal, data.start, data.end, sender.address, data.isSponsored)    
-    
+        
     // First create the crowdfunding project
     createProjectAction(sender.address, project)
         .then((appId) => {

@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import { firestoreGetProjectAction } from '../../utils/firebase';
 import Loader from '../utils/loader';
-import img from '../../assets/img/fire.jpg'
+import img from '../../assets/img/tree_lights.jpg'
 import { microalgosToAlgos } from 'algosdk';
 import { ProgressBar } from 'react-bootstrap';
 import { DonateButton } from '../donateButton';
@@ -37,7 +37,7 @@ const ProjectPage = () => {
                 <MDBContainer className='mt-3 mb-0 bg-transparent'>
                 <MDBRow className='g-0'>
                 <MDBCol className='mt-4' md='4' style={{overflow: 'hidden', height: "65vh"}}>
-                    <MDBCardImage src={img} alt='...' fluid style={{objectFit: 'cover', width:"auto", height:'100%'}}/>
+                    <MDBCardImage src={project.image.length > 0 ? project.image: img} alt='...' fluid style={{objectFit: 'cover', width:"auto", height:'100%'}}/>
                 </MDBCol>
                 <MDBCol md='8'>
                     <MDBCardBody>

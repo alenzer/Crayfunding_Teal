@@ -60,7 +60,7 @@ export const firestoreGetProjectAction = async(appId) => {
     return new crowdfundingProject(
         data.name, data.image, data.description, data.goal, data.startDate, 
         data.endDate, data.creator, data.isSponsored, data.current_amount, 
-        data.appId, data.escrow, data.deleted, data.claimed);
+        data.appId, data.escrow, data.deleted, data.claimed, data.platform);
 }
 
 export const firestoreGetAllProjectsAction = async() => {
@@ -70,7 +70,7 @@ export const firestoreGetAllProjectsAction = async() => {
         return new crowdfundingProject(
             data.name, data.image, data.description, data.goal, data.startDate, 
             data.endDate, data.creator, data.isSponsored, data.current_amount, 
-            data.appId, data.escrow, data.deleted, data.claimed)});
+            data.appId, data.escrow, data.deleted, data.claimed, data.platform)});
 }
 
 const firestoreGetProjectsForQuery = async (query) =>{
@@ -81,7 +81,7 @@ const firestoreGetProjectsForQuery = async (query) =>{
       return new crowdfundingProject(
         data.name, data.image, data.description, data.goal, data.startDate, 
         data.endDate, data.creator, data.isSponsored, data.current_amount, 
-        data.appId, data.escrow, data.deleted, data.claimed)});
+        data.appId, data.escrow, data.deleted, data.claimed, data.platform)});
 }
 
 export const firestoreGetSponsoredProjectsAction = async() => {

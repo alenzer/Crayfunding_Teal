@@ -13,15 +13,21 @@ import {
     claimArg,
     refundArg,
     amountInvestedKey,
-    currentAmountKey
+    currentAmountKey,
+    sponsoredProjectFee,
+    platformAddr
 } from "./constants";
 
-import approvalProgram from "../contracts/teal/crowdfunding_approval.teal";
-import clearProgram from "../contracts/teal/crowdfunding_clear.teal";
-import escrowProgram from '../contracts/teal/escrow.teal'
+import raw from "raw.macro";
+
+//const markdown = raw("./README.md");
+
+const approvalProgram = raw("../contracts/teal/crowdfunding_approval.teal");
+const clearProgram = raw("../contracts/teal/crowdfunding_clear.teal");
+const escrowProgram = raw("../contracts/teal/escrow.teal");
 
 export class crowdfundingProject {
-    constructor(name, image, description, goal, startDate, endDate, creator, isSponsored=false, current_amount=0, appId=0, escrow=null, deleted=false, claimed=false) {
+    constructor(name, image, description, goal, startDate, endDate, creator, isSponsored=false, current_amount=0, appId=0, escrow=null, deleted=false, claimed=false, platform=platformAddr) {
         this.name = name;
         this.image = image;
         this.description = description;
@@ -35,6 +41,7 @@ export class crowdfundingProject {
         this.isSponsored = isSponsored;
         this.deleted = deleted;
         this.claimed = claimed;
+        this.platform = platformAddr;
     }
 }
 
@@ -50,6 +57,7 @@ let compiledClearProgram;
 
 export const createProjectAction = async (senderAddress, project) => {
     console.log("Adding project...")
+    console.log(project)
 
     compiledApprovalProgram = await compileProgram(approvalProgram);
     compiledClearProgram = await compileProgram(clearProgram)
@@ -64,8 +72,10 @@ export const createProjectAction = async (senderAddress, project) => {
     let goal = algosdk.encodeUint64(project.goal);
     let startDate = algosdk.encodeUint64(project.startDate);
     let endDate = algosdk.encodeUint64(project.endDate);
+    let platform = algosdk.decodeAddress(platformAddr).publicKey;
+    let isSponsored = algosdk.encodeUint64(project.isSponsored? 1: 0);
 
-    let appArgs = [startDate, endDate, goal]
+    let appArgs = [startDate, endDate, goal, platform, isSponsored]
     console.log(startDate, endDate, goal)
 
     // Create ApplicationCreateTxn
@@ -83,20 +93,53 @@ export const createProjectAction = async (senderAddress, project) => {
         appArgs: appArgs
     });
 
-    // Get transaction ID
-    let txId = txn.txID().toString();
-    const txn_b64 = await window.AlgoSigner.encoding.msgpackToBase64(txn.toByte());
+    let txId;
 
-    // Sign & submit the transaction
-    let signedTxn = await window.AlgoSigner.signTxn([{ txn: txn_b64 }]);
-    console.log("Signed transaction with txID: %s", txId);
+    if (!project.isSponsored) {
+        // Get transaction ID
+        txId = txn.txID().toString();
+        const txn_b64 = await window.AlgoSigner.encoding.msgpackToBase64(txn.toByte());
 
-    let binarySignedTx = await window.AlgoSigner.encoding.base64ToMsgpack(
-        signedTxn[0].blob
-    );
-    console.log("Attempting to send transaction")
-    await algodClient.sendRawTransaction(binarySignedTx).do();
-    console.log("Sent transaction with txID: %s", txId)
+        // Sign & submit the transaction
+        let signedTxn = await window.AlgoSigner.signTxn([{ txn: txn_b64 }]);
+        console.log("Signed transaction with txID: %s", txId);
+
+        let binarySignedTx = await window.AlgoSigner.encoding.base64ToMsgpack(
+            signedTxn[0].blob
+        );
+        console.log("Attempting to send transaction")
+        await algodClient.sendRawTransaction(binarySignedTx).do();
+        console.log("Sent transaction with txID: %s", txId)
+
+    } else {
+        let feeTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+            from: senderAddress,
+            to: platformAddr,
+            amount: sponsoredProjectFee,
+            suggestedParams: params
+        })
+
+        let txnArray = [txn, feeTxn]
+
+        // Create group transaction out of previously build transactions
+        algosdk.assignGroupID(txnArray)
+    
+        let binaryTxs = [txn.toByte(), feeTxn.toByte()];
+        let base64Txs = binaryTxs.map((binary) => window.AlgoSigner.encoding.msgpackToBase64(binary));
+        
+        let signedTxs = await window.AlgoSigner.signTxn([
+            {txn: base64Txs[0]},
+            {txn: base64Txs[1]},
+          ]);
+        console.log("Signed group transaction");
+        
+        let binarySignedTxs = signedTxs.map((tx) => window.AlgoSigner.encoding.base64ToMsgpack(tx.blob));
+        console.log("Attempting to send group transaction")
+        await algodClient.sendRawTransaction(binarySignedTxs).do();
+        console.log("Sent group transaction")
+
+        txId = signedTxs[0]["txID"];
+    }
 
     // Wait for transaction to be confirmed
     let confirmedTxn = await algosdk.waitForConfirmation(algodClient, txId, 4);
@@ -121,9 +164,6 @@ export const deployEscrowAndUpdateProjectAction = async (senderAddress, appId) =
     let params = await algodClient.getTransactionParams().do();
     params.fee = algosdk.ALGORAND_MIN_TX_FEE;
     params.flatFee = true;
-
-    console.log(algosdk.decodeAddress(escrowLSig.address()))
-    console.log(typeof algosdk.decodeAddress(escrowLSig.address()))
 
     let appArgs = [algosdk.decodeAddress(escrowLSig.address()).publicKey]
 
