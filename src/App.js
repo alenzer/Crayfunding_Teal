@@ -68,8 +68,8 @@ const App = function AppWrapper() {
     return (
         <>
             <Toaster />
+            <HashRouter>
             {address.length > 0 && (window.sessionStorage.getItem("address").length > 0) ? (
-                <HashRouter>
                 <div style={{backgroundColor: "#263238",   minHeight: "100vh"}}>
                 <HeaderWithNav/>
                 <Container fluid="md">
@@ -88,10 +88,12 @@ const App = function AppWrapper() {
                 
                 <Footer/>
                 </div>
-                </HashRouter>
             ) : (
-                <LandingPage name={"CrazyCrowd"} mainImg={coverImg} connect={connectWallet}/>
+                <div>
+                <LandingPage name={"CrazyFunding"} mainImg={coverImg} connect={connectWallet}/>
+                </div>
             )}
+            </HashRouter>
         </>
     );
 }

@@ -20,7 +20,7 @@ function HeaderWithNav() {
                 height="50"
                 className="d-inline-block align-top"
               />{' '}
-            CrazyCrowd</Navbar.Brand>
+            CrazyFunding</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="navbarScroll"> <MDBIcon icon='bars' fas /></Navbar.Toggle>
           <Navbar.Collapse id="navbarScroll"  className="justify-content-end">

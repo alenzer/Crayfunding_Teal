@@ -1,13 +1,11 @@
 import React, { useCallback } from 'react';
 import { useNavigate } from "react-router-dom";
 import {
-  Badge,
   ProgressBar,
   Button
 } from 'react-bootstrap';
 
 import {
-    MDBCard,
     MDBCardTitle,
     MDBCardText,
     MDBCardBody,
@@ -15,7 +13,6 @@ import {
     MDBRow,
     MDBCol,
     MDBCardSubTitle,
-    MDBBtn,
     MDBContainer
   } from 'mdb-react-ui-kit';
 
@@ -25,8 +22,41 @@ import { microAlgosToString } from '../utils/conversions';
 import { askRefundFromProject, claimFundsFromProject, deleteProject } from '../utils/projectActions';
 import { BadgeList } from './utils/badgeList';
 
-// TODO: window.location.reload(false); Check if in this way the buttons refresh automatically
-// TODO: find out why the delete button always stays on if the project.deleted property is true :(
+function ProjectCardNotLoggedIn({project, ...props}) {
+  return (
+    <div>
+    <MDBContainer style={{ maxWidth: '100%', backgroundColor:'transparent'}}>
+        <MDBRow className='g-0 align-items-center' style={{overflow: 'hidden'}}>
+          <MDBCol className='justify-content-center' lg='4' sm='12' style={{overflow: 'hidden', maxHeight: 200}}>
+            <MDBCardImage className='ml-5' src={project.image.length > 0 ? project.image: imgProd} alt='...' style={{objectFit: 'cover', width:"100%", height:'auto'}}/>
+          </MDBCol>
+          <MDBCol lg='8'>
+            <MDBCardBody>
+              <MDBRow className="align-items-baseline justify-content-end p-0 m-0">
+                <MDBCol md='6' className='p-0 m-0 pe-1'>
+                <MDBCardTitle className='text-light fs-4'>{project.name}</MDBCardTitle>
+                <MDBCardSubTitle className='text-light text-muted'>Goal: {microAlgosToString(project.goal)} ALGO</MDBCardSubTitle>
+                </MDBCol>
+                <MDBCol md='6' className='p-0 m-0 pb-1'>
+                  <BadgeList project={project}/>
+                </MDBCol>
+              </MDBRow>
+              <MDBCardText className='text-light max-lines'>
+                {project.description}
+              </MDBCardText>
+            <ProgressBar 
+                variant='primary' 
+                now={project.current_amount} 
+                max={project.goal} 
+                label={microAlgosToString(project.current_amount) + " ALGO"} 
+                style={{height:20, borderRadius:10}}/>
+            </MDBCardBody>
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+      </div>
+  )
+}
 
   
 function ProjectCard({project, action, address, ...props}) {
@@ -132,6 +162,24 @@ export function ProjectList({projects, address, useTitle = true, action='donate'
       {projects.map((project, index) =>(
         <div  key={index}>
         <ProjectCard project={project} action={action} address={address}/>
+        {index !== listLength? (<hr  style={{ backgroundColor: 'rgba(255, 255, 255, 2)'}}/>): (<></>)}
+        </div>
+      ))}
+  </MDBContainer>
+)}
+
+export function ProjectListNotLoggedIn({projects}) {
+  let listLength = projects.length -1
+  return(
+    <MDBContainer 
+    className='justify-content-center pt-3' 
+    style={{
+      borderRadius:"15px 15px 0px 0px", 
+      borderBottom: "none"}}>
+        <h3 className="text-center font-title text-light" style={{fontSize: "40px"}}><b>All our projects</b></h3>
+      {projects.map((project, index) =>(
+        <div  key={index}>
+        <ProjectCardNotLoggedIn project={project}/>
         {index !== listLength? (<hr  style={{ backgroundColor: 'rgba(255, 255, 255, 2)'}}/>): (<></>)}
         </div>
       ))}

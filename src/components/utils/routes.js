@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Route, Routes } from "react-router-dom";
 import Home from "../pages/home";
 import CreateProjectForm from "../pages/createProject";
