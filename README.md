@@ -1,70 +1,34 @@
-# Getting Started with Create React App
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Algorand](https://img.shields.io/badge/Algorand-000000?style=for-the-badge&logo=Algorand&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# CrazyFunding
 
-## Available Scripts
+This demo was realized for the 3rd italian edition of [MasterZ.|Blockchain & Digital Assets](https://www.masterzblockchain.com/). It's an on-chain crowdfunding platform: every new crowdfunding campaign deploys a stateful smart contract - which maintaines the relevant information (like start and end date) and which also deals with local user-information after opt-in - and a stateless smart contract, which acts as an escrow account, where the funds are kept locked until the end of the fundraising campaign.
 
-In the project directory, you can run:
+The smart contracts where developed in Python using PyTEAL, while the frontend is realized using JavaScript and React. The app is currently online [here](https://crazyfunding.vercel.app/).
 
-### `npm start`
+## Development Setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This repo was tested with Python 3.10.4. In order to install the requirements for the backend-only demo, we recommend you create a virtual environment, activate it and then simply run
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```sh
+  pip install -U pip
+  pip install -r requirements.txt
+```
+If you want to run the demo you'd need to install the Algorand (Sandbox)[https://github.com/algorand/sandbox] (requires Docker): then, from your Sandbox directory run `sh ./sandbox up`. This will create a private Algorand network, generating and funding a 3 different accounts that you can use for testing purposes. If however you need more accounts, you can use the `new_account_gen.sh` shell script, which will create a new account and move funds to it.
 
-### `npm test`
+Finally, you can run the backend-only demo through 
+```sh
+  python -m src.contracts.demo
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Client-side
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+We have a React.js project bootstrapped with create-react-app. Once you clone the repositorym to run a local version of this app simply move into the relative folder and run
+```sh
+  npm i
+  npm start
+```
+The app should open in [http://localhost:3000](http://localhost:3000) and be visible in your browser. Note that to interact with the Algorand blockchain you need the AlgoSigner extension for Chrome.
