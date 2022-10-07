@@ -5,6 +5,9 @@
 
 # CrazyFunding
 
+<p align="center"> <img align="center" alt="Landing Page" src="assets/cover.jpeg" width="80%"/> </p> <br>
+
+
 This demo was realized for the 3rd italian edition of [MasterZ.|Blockchain & Digital Assets](https://www.masterzblockchain.com/). It's an on-chain crowdfunding platform: every new crowdfunding campaign deploys a stateful smart contract - which maintaines the relevant information (like start and end date) and which also deals with local user-information after opt-in - and a stateless smart contract, which acts as an escrow account, where the funds are kept locked until the end of the fundraising campaign.
 
 The smart contracts where developed in Python using PyTEAL, while the frontend is realized using JavaScript and React. The app is currently online [here](https://crazyfunding.vercel.app/).
