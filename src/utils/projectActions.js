@@ -27,7 +27,7 @@ export const createProject = async (sender, data) => {
             toast.error("Could not create the project", {
                 position: 'bottom-center'
             });
-        }).finally(() => window.location.reload());
+        });
 };
 
 export const deleteProject = async (sender, appId) => {
@@ -45,7 +45,7 @@ export const deleteProject = async (sender, appId) => {
             toast.error("Could not delete the project", {
                 position: 'bottom-center'
             });
-        }).finally(()=> window.location.reload());
+        });
 };
 
 
@@ -63,7 +63,7 @@ export const donateToProject = async (sender, project, amount) => {
             toast.error("Could not donate to the project", {
                 position: 'bottom-center'
             });
-        }).finally(()=> window.location.reload());
+        });
 };
 
 export const claimFundsFromProject = async(sender, project) => {
@@ -79,7 +79,7 @@ export const claimFundsFromProject = async(sender, project) => {
             console.log(err);
             toast.error("Could not claim the funds", {
                 position: 'bottom-center'
-            });}).finally(()=> window.location.reload());
+            });});
 };
 
 export const askRefundFromProject = async(sender, project) => {
@@ -94,5 +94,5 @@ export const askRefundFromProject = async(sender, project) => {
             console.log(error);
             toast.error("Could not obtain a refund", {
                 position: 'bottom-center'
-        });}).finally(()=> window.location.reload());
+        });});
 };
