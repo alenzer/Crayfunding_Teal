@@ -20,7 +20,7 @@ This repo was tested with Python 3.10.4. In order to install the requirements fo
   pip install -U pip
   pip install -r requirements.txt
 ```
-If you want to run the demo you'd need to install the Algorand (Sandbox)[https://github.com/algorand/sandbox] (requires Docker): then, from your Sandbox directory run `sh ./sandbox up`. This will create a private Algorand network, generating and funding a 3 different accounts that you can use for testing purposes. If however you need more accounts, you can use the `new_account_gen.sh` shell script, which will create a new account and move funds to it.
+If you want to run the demo you'd need to install the Algorand [Sandbox](https://github.com/algorand/sandbox) (requires Docker): then, from your Sandbox directory run `sh ./sandbox up`. This will create a private Algorand network, generating and funding a 3 different accounts that you can use for testing purposes. If however you need more accounts, you can use the `new_account_gen.sh` shell script, which will create a new account and move funds to it.
 
 Finally, you can run the backend-only demo through 
 ```sh
